@@ -1,4 +1,4 @@
-# Bitcoin Ticket 🎫
+# Bitcoin Ticket 🎫⚡
 
 Demo platform for buy/sell tickets using Bitcoin by BDK and WASM
 
@@ -17,6 +17,11 @@ The motivation behind Bitcoin Ticket is to provide a secure and decentralized wa
 - User-friendly interface for users
 - Non-KYC
 
+## Futures Development
+
+- Nostr compatible
+- Become Nostr client
+
 ## Installation
 To install Bitcoin Ticket, follow these steps:
 1. Clone the repository:
@@ -31,4 +36,7 @@ npm install
 ```
 npm run dev
 ```
+## Authors
 
+- Idea by Rsync25
+- Developed by 22388o
