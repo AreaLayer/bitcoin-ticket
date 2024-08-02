@@ -4,11 +4,11 @@ Demo platform for buy/sell tickets using Bitcoin by BDK and WASM
 
 ## About 
 
-Bitcoin Ticket is a demo platform for buy/sell tickets using Bitcoin, providing a secure and decentralized way. 
+Bitcoin Ticket is a demo platform for Bitcoin on L1 (on-chain)
 
 ## Motivation 
 
-The motivation behind Bitcoin Ticket is to provide a secure and decentralized way to buy and sell tickets using Bitcoin without central coordinator via P2P
+The motivation behind Bitcoin Ticket is to provide a secure and decentralized way without central coordinator via P2P
 
 ## Features
 
@@ -35,7 +35,7 @@ The motivation behind Bitcoin Ticket is to provide a secure and decentralized wa
 To install Bitcoin Ticket, follow these steps:
 1. Clone the repository:
 ```
-git clone https://github.com/22388o/bitcoin-ticket.git
+git clone https://github.com/AreaLayer/bitcoin-ticket.git
 ```
 2. Install the dependencies:
 ```
