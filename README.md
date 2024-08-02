@@ -1,22 +1,26 @@
-# Bitcoin Ticket 🎫
+# Bitcoin Ticket 🎫⚡
 
 Demo platform for buy/sell tickets using Bitcoin by BDK and WASM
 
 ## About 
 
-Bitcoin Ticket is a demo platform for buy/sell tickets using Bitcoin by BDK and WASM, which is a platform that allows users to buy and sell tickets for events using Bitcoin. The platform is built using Bitcoin, BDK, and WASM, and it provides a secure and decentralized way to buy and sell tickets.
+Bitcoin Ticket is a demo platform for buy/sell tickets using Bitcoin, provides a secure and decentralized way to buy and sell tickets.
 
 ## Motivation 
 
-The motivation behind Bitcoin Ticket is to provide a secure and decentralized way to buy and sell tickets using Bitcoin. The platform is built using Bitcoin, BDK, and WASM, which provides a secure and decentralized way to buy and sell tickets. The platform is also built using React, which provides a user-friendly interface for users to buy and sell tickets.
+The motivation behind Bitcoin Ticket is to provide a secure and decentralized way to buy and sell tickets using Bitcoin without central coordinator, only P2P
 
 ## Features
 
 - Buy and sell tickets using Bitcoin
 - Secure and decentralized way to buy and sell tickets
-- User-friendly interface for users to buy and sell tickets
-- Built using Bitcoin, BDK, and WASM
+- User-friendly interface for users
 - Non-KYC
+
+## Futures Development
+
+- Nostr compatible
+- Become Nostr client
 
 ## Installation
 To install Bitcoin Ticket, follow these steps:
@@ -32,4 +36,7 @@ npm install
 ```
 npm run dev
 ```
+## Authors
 
+- Idea by Rsync25
+- Developed by 22388o
