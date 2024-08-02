@@ -15,5 +15,3 @@ crate-type = ["cdylib"]
 version = "0.3"
 features = ["Window", "Document", "HtmlElement"]
 
-[dependencies.esplora]
-version = "0.9.0"
