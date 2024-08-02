@@ -21,6 +21,8 @@ The motivation behind Bitcoin Ticket is to provide a secure and decentralized wa
 
 - Nostr compatible
 - Become Nostr client
+- Support Lightning Payments
+
 
 ## Installation
 To install Bitcoin Ticket, follow these steps:
