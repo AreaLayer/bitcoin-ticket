@@ -1,0 +1,19 @@
+[package]
+name = "bitcoin_ticket_platform"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bdk = "0.21.0"
+wasm-bindgen = "0.2.83"
+esplora = "0.9.0"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies.web-sys]
+version = "0.3"
+features = ["Window", "Document", "HtmlElement"]
+
+[dependencies.esplora]
+version = "0.9.0"
