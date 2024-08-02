@@ -4,11 +4,11 @@ Demo platform for buy/sell tickets using Bitcoin by BDK and WASM
 
 ## About 
 
-Bitcoin Ticket is a demo platform for buy/sell tickets using Bitcoin, provides a secure and decentralized way to buy and sell tickets.
+Bitcoin Ticket is a demo platform for buy/sell tickets using Bitcoin, providing a secure and decentralized way. 
 
 ## Motivation 
 
-The motivation behind Bitcoin Ticket is to provide a secure and decentralized way to buy and sell tickets using Bitcoin without central coordinator, only P2P
+The motivation behind Bitcoin Ticket is to provide a secure and decentralized way to buy and sell tickets using Bitcoin without central coordinator via P2P
 
 ## Features
 
@@ -16,6 +16,13 @@ The motivation behind Bitcoin Ticket is to provide a secure and decentralized wa
 - Secure and decentralized way to buy and sell tickets
 - User-friendly interface for users
 - Non-KYC
+
+## How works? 
+
+1. User creates a ticket
+2. User sends the ticket to the seller
+3. Seller receives the ticket and sends the ticket to the buyer
+4. Buyer receives the ticket and sends the ticket to the seller
 
 ## Futures Development
 
