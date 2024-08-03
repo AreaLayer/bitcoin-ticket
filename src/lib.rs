@@ -1,3 +1,5 @@
+use std::net::UdpSocket;
+use std::io::{self, IoSlice, IoSliceMut};
 use bdk::bitcoin::consensus::encode;
 use bdk::bitcoin::network::constants::Network;
 use bdk::bitcoin::util::address::Address;
@@ -85,4 +87,37 @@ fn perform_transaction(to_address: &str, amount: u64) -> Result<String, Error> {
     let txid = wallet.broadcast(&tx)?;
 
     Ok(txid.to_string())
+}
+// Define the trait
+pub trait WritevExt {
+    fn writev(&self, bufs: &[IoSlice<'_>]) -> io::Result<usize>;
+    fn readv(&self, bufs: &mut [IoSliceMut<'_>]) -> io::Result<usize>;
+}
+
+// Implement the trait for UdpSocket
+impl WritevExt for UdpSocket {
+    fn writev(&self, bufs: &[IoSlice<'_>]) -> io::Result<usize> {
+        self.send_vectored(bufs)
+    }
+
+    fn readv(&self, bufs: &mut [IoSliceMut<'_>]) -> io::Result<usize> {
+        self.recv_vectored(bufs)
+    }
+}
+
+fn main() {
+    // Example usage
+    let socket = UdpSocket::bind("127.0.0.1:0").expect("Couldn't bind to address");
+
+    let buf1 = b"Hello";
+    let buf2 = b"World";
+    let bufs = [IoSlice::new(buf1), IoSlice::new(buf2)];
+
+    socket.writev(&bufs).expect("writev failed");
+
+    let mut buf1 = [0; 5];
+    let mut buf2 = [0; 5];
+    let mut bufs = [IoSliceMut::new(&mut buf1), IoSliceMut::new(&mut buf2)];
+
+    socket.readv(&mut bufs).expect("readv failed");
 }
