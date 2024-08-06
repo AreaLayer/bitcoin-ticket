@@ -1,5 +1,6 @@
 use std::net::UdpSocket;
 use std::io::{self, IoSlice, IoSliceMut};
+use std::str::FromStr;
 use bdk::bitcoin::consensus::encode;
 use bdk::bitcoin::network::constants::Network;
 use bdk::bitcoin::util::address::Address;
@@ -14,6 +15,7 @@ use wasm_bindgen::prelude::*;
 use serde::{Serialize, Deserialize};
 
 #[wasm_bindgen]
+#[derive(Serialize, Deserialize)]
 pub struct TicketEvent {
     name: String,
     price: u64,
@@ -29,38 +31,36 @@ impl TicketEvent {
 }
 
 #[wasm_bindgen]
-pub fn create_wallet() -> String {
+pub fn create_wallet() -> Result<String, JsValue> {
     let wallet = Wallet::new(
         "wpkh([c0123456/84'/0'/0']tpubD6NzVbkrYhZ4W6Bh5xmhs1FSnbvX23pEzyL5QSKziXYXSKZXUNkFLZAKf8DL7PSL6cmWW5BLaepuD3kQnEw8QoXBWQroiyxKHDUNeLxh5uT/0/*)",
         None,
         Network::Testnet,
         MemoryDatabase::default(),
         EsploraBlockchain::new("https://blockstream.info/testnet/api", 1),
-    ).unwrap();
+    ).map_err(|e| JsValue::from_str(&format!("Failed to create wallet: {:?}", e)))?;
 
-    let address = wallet.get_address(AddressIndex::New).unwrap();
-    address.to_string()
+    let address = wallet.get_address(AddressIndex::New)
+        .map_err(|e| JsValue::from_str(&format!("Failed to get address: {:?}", e)))?;
+    Ok(address.to_string())
 }
 
 #[wasm_bindgen]
-pub fn create_ticket_event(name: &str, price: u64) -> JsValue {
-    let address = create_wallet();
+pub fn create_ticket_event(name: &str, price: u64) -> Result<JsValue, JsValue> {
+    let address = create_wallet()?;
     let event = TicketEvent {
         name: name.to_string(),
         price,
         address,
     };
-    JsValue::from_serde(&event).unwrap()
+    JsValue::from_serde(&event).map_err(|e| JsValue::from_str(&format!("Serialization error: {:?}", e)))
 }
 
 #[wasm_bindgen]
-pub fn purchase_ticket(event: &JsValue) -> String {
-    let event: TicketEvent = event.into_serde().unwrap();
-    let txid = perform_transaction(&event.address, event.price);
-    match txid {
-        Ok(txid) => format!("Transaction sent: {}", txid),
-        Err(e) => format!("Transaction failed: {:?}", e),
-    }
+pub fn purchase_ticket(event: &JsValue) -> Result<String, JsValue> {
+    let event: TicketEvent = event.into_serde().map_err(|e| JsValue::from_str(&format!("Deserialization error: {:?}", e)))?;
+    let txid = perform_transaction(&event.address, event.price).map_err(|e| JsValue::from_str(&format!("Transaction error: {:?}", e)))?;
+    Ok(format!("Transaction sent: {}", txid))
 }
 
 fn perform_transaction(to_address: &str, amount: u64) -> Result<String, Error> {
@@ -72,22 +72,27 @@ fn perform_transaction(to_address: &str, amount: u64) -> Result<String, Error> {
         EsploraBlockchain::new("https://blockstream.info/testnet/api", 1),
     )?;
 
-    let to_address = Address::from_str(to_address)?;
+    let to_address = Address::from_str(to_address)
+        .map_err(|e| format!("Invalid address format: {:?}", e))?;
 
     let mut builder = wallet.build_tx();
     builder
         .add_recipient(to_address.script_pubkey(), amount)
         .enable_rbf();
 
-    let (mut psbt, _) = builder.finish()?;
+    let (mut psbt, _) = builder.finish()
+        .map_err(|e| format!("Failed to build transaction: {:?}", e))?;
 
-    wallet.sign(&mut psbt, SignOptions::default())?;
+    wallet.sign(&mut psbt, SignOptions::default())
+        .map_err(|e| format!("Failed to sign transaction: {:?}", e))?;
 
     let tx = psbt.extract_tx();
-    let txid = wallet.broadcast(&tx)?;
+    let txid = wallet.broadcast(&tx)
+        .map_err(|e| format!("Failed to broadcast transaction: {:?}", e))?;
 
     Ok(txid.to_string())
 }
+
 // Define the trait
 pub trait WritevExt {
     fn writev(&self, bufs: &[IoSlice<'_>]) -> io::Result<usize>;
@@ -105,8 +110,8 @@ impl WritevExt for UdpSocket {
     }
 }
 
-fn main() {
-    // Example usage
+// Example usage of UdpSocket
+pub fn udp_socket_example() {
     let socket = UdpSocket::bind("127.0.0.1:0").expect("Couldn't bind to address");
 
     let buf1 = b"Hello";
