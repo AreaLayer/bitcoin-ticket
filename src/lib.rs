@@ -16,6 +16,11 @@ use serde::{Serialize, Deserialize};
 
 #[wasm_bindgen]
 #[derive(Serialize, Deserialize)]
+pub struct consensus_encode {
+    pub encoded: String,
+}
+#[wasm_bindgen]
+#[derive(Serialize, Deserialize)]
 pub struct TicketEvent {
     name: String,
     price: u64,
