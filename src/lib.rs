@@ -1,7 +1,7 @@
 use std::net::UdpSocket;
 use std::io::{self, IoSlice, IoSliceMut};
 use std::str::FromStr;
-use bdk::bitcoin::consensus::encode;
+use bdk::bitcoin::consensus::Encodable;
 use bdk::bitcoin::network::constants::Network;
 use bdk::bitcoin::util::address::Address;
 use bdk::bitcoin::Amount;
@@ -14,6 +14,13 @@ use wasm_bindgen::prelude::*;
 use serde::{Serialize, Deserialize};
 use wasm_bindgen::prelude::*;
 #[wasm_bindgen]
+pub fn create_wallet() -> Result<String, JsValue> {
+    let wallet = Wallet::new(
+        
+
+    let address = wallet.get_address(AddressIndex::New).unwrap();
+    Ok(address.to_string())
+    }
 #[derive(Serialize, Deserialize)]
 pub struct ConsensusEncode {
     pub encoded: String,
