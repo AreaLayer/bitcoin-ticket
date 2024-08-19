@@ -16,11 +16,11 @@ use wasm_bindgen::prelude::*;
 #[wasm_bindgen]
 pub fn create_wallet() -> Result<String, JsValue> {
     let wallet = Wallet::new(
-        
-
-    let address = wallet.get_address(AddressIndex::New).unwrap();
-    Ok(address.to_string())
-    }
+    Network::Testnet,
+    Address::p2tr(secp, internal_key, merkle_root, network),
+    Amount::from_sat(satoshi),
+    )
+}
 #[derive(Serialize, Deserialize)]
 pub struct ConsensusEncode {
     pub encoded: String,
@@ -51,10 +51,12 @@ impl TicketEvent {
 
 #[wasm_bindgen]
 pub fn create_wallet() -> Result<String, JsValue> {
-    let wallet = Wallet::new(
-        "wpkh([c0123456/84'/0'/0']tpubD6NzVbkrYhZ4W6Bh5xmhs1FSnbvX23pEzyL5QSKziXYXSKZXUNkFLZAKf8DL7PSL6cmWW5BLaepuD3kQnEw8QoXBWQroiyxKHDUNeLxh5uT/0/*)",
-        None,
-        Network::Testnet,
+    impl wallet::Wallet {
+        fn new(
+        network: Network,
+        address: Address,
+        amount: Amount,
+        wallet_type: WalletType,
         MemoryDatabase::default(),
         EsploraBlockchain::new("https://blockstream.info/testnet/api", 1),
     ).map_err(|e| JsValue::from_str(&format!("Failed to create wallet: {:?}", e)))?;
