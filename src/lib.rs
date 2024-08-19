@@ -5,7 +5,7 @@ use bdk::bitcoin::consensus::encode;
 use bdk::bitcoin::network::constants::Network;
 use bdk::bitcoin::util::address::Address;
 use bdk::bitcoin::Amount;
-use bdk::blockchain::EsploraBlockchain;use bdk::database::MemoryDatabase;
+use bdk::database::MemoryDatabase;
 use bdk::wallet::AddressIndex;
 use bdk::Wallet;
 use bdk::SignOptions;
@@ -17,6 +17,14 @@ use wasm_bindgen::prelude::*;
 #[derive(Serialize, Deserialize)]
 pub struct ConsensusEncode {
     pub encoded: String,
+}
+
+impl Clone for ConsensusEncode {
+    fn clone(&self) -> Self {
+        ConsensusEncode {
+            encoded: self.encoded.clone(),
+        }
+    }
 }
 #[wasm_bindgen]
 #[derive(Serialize, Deserialize)]
