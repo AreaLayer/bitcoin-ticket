@@ -53,30 +53,55 @@ impl TicketEvent {
 pub fn create_wallet() -> Result<String, JsValue> {
     impl wallet::Wallet {
         fn new(
-        network: Network,
-        address: Address,
-        amount: Amount,
-        wallet_type: WalletType,
-        MemoryDatabase::default(),
-        EsploraBlockchain::new("https://blockstream.info/testnet/api", 1),
-    ).map_err(|e| JsValue::from_str(&format!("Failed to create wallet: {:?}", e)))?;
+            network: Network,
+            address: Address,
+            amount: Amount,
+            wallet_type: WalletType,
+        ) -> Result<Self, Error> {
+            let wallet = Wallet::new(
+                network,
+                MemoryDatabase::default(),
+                EsploraBlockchain::new("https://blockstream.info/testnet/api", 1),
+            ).map_err(|e| Error::Generic(format!("Failed to create wallet: {:?}", e)))?;
 
-    let address = wallet.get_address(AddressIndex::New)
-        .map_err(|e| JsValue::from_str(&format!("Failed to get address: {:?}", e)))?;
-    Ok(address.to_string())
-}
+            Ok(Self {
+                wallet,
+                address,
+                amount,
+                wallet_type,
+            })
+        }
 
-#[wasm_bindgen]
-pub fn create_ticket_event(name: &str, price: u64) -> Result<JsValue, JsValue> {
-    let address = create_wallet()?;
-    let event = TicketEvent {
-        name: name.to_string(),
-        price,
-        address,
-    };
-    JsValue::from_serde(&event).map_err(|e| JsValue::from_str(&format!("Serialization error: {:?}", e)))
-}
+        pub fn get_address(&self) -> Result<String, JsValue> {
+            let address = self.wallet.get_address(AddressIndex::New)
+                .map_err(|e| JsValue::from_str(&format!("Failed to get address: {:?}", e)))?;
+            Ok(address.to_string())
+        }
+    }
 
+    #[wasm_bindgen]
+    pub fn create_wallet() -> Result<String, JsValue> {
+        let wallet = Wallet::new(
+            Network::Testnet,
+            MemoryDatabase::default(),
+            EsploraBlockchain::new("https://blockstream.info/testnet/api", 1),
+        ).map_err(|e| JsValue::from_str(&format!("Failed to create wallet: {:?}", e)))?;
+
+        let address = wallet.get_address(AddressIndex::New)
+            .map_err(|e| JsValue::from_str(&format!("Failed to get address: {:?}", e)))?;
+        Ok(address.to_string())
+    }
+
+    #[wasm_bindgen]
+    pub fn create_ticket_event(name: &str, price: u64) -> Result<JsValue, JsValue> {
+        let address = create_wallet()?;
+        let event = TicketEvent {
+            name: name.to_string(),
+            price,
+            address,
+        };
+        JsValue::from_serde(&event).map_err(|e| JsValue::from_str(&format!("Serialization error: {:?}", e)))
+    }
 #[wasm_bindgen]
 pub fn purchase_ticket(event: &JsValue) -> Result<String, JsValue> {
     let event: TicketEvent = event.into_serde().map_err(|e| JsValue::from_str(&format!("Deserialization error: {:?}", e)))?;
