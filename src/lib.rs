@@ -13,15 +13,17 @@ use bdk::Error;
 use wasm_bindgen::prelude::*;
 use serde::{Serialize, Deserialize};
 use wasm_bindgen::prelude::*;
+
 #[wasm_bindgen]
 pub fn create_wallet() -> Result<String, JsValue> {
     let wallet = Wallet::new(
-    Network::Testnet,
-    Address::p2tr(secp, internal_key, merkle_root, network),
-    Amount::from_sat(satoshi),
-    )
-}
-#[derive(Serialize, Deserialize)]
+        Network::Testnet,
+        MemoryDatabase::default(),
+        EsploraBlockchain::new("https://blockstream.info/testnet/api", 1),
+    ).map_err(|e| JsValue::from_str(&format!("Failed to create wallet: {:?}", e)))?;
+
+    Ok(wallet.to_string())
+}#[derive(Serialize, Deserialize)]
 pub struct ConsensusEncode {
     pub encoded: String,
 }
@@ -71,6 +73,8 @@ pub fn create_wallet() -> Result<String, JsValue> {
                 wallet_type,
             })
         }
+
+    }
 
         pub fn get_address(&self) -> Result<String, JsValue> {
             let address = self.wallet.get_address(AddressIndex::New)
