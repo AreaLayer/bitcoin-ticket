@@ -1,16 +1,19 @@
 use std::net::UdpSocket;
 use std::io::{self, IoSlice, IoSliceMut};
-use std::str::FromStr;
 use bdk::wallet::AddressIndex;
 use bdk::Wallet;
 use bdk::SignOptions;
 use bdk::Error;
+use bdk::blockchain::EsploraBlockchain;
+use bdk::electrum_client::Client;
+use bdk::bitcoin::Network::Testnet;
+use bdk::bitcoin::consensus::encode::{deserialize, serialize};
 use serde::{Serialize, Deserialize};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 pub fn create_wallet() -> Result<String, JsValue> {
-    let wallet = Wallet::new(
+    let wallet: Wallet<default::Wallet> = Wallet::new(
         Network::Testnet,
         MemoryDatabase::default(),
         EsploraBlockchain::new("https://blockstream.info/testnet/api", 1),
