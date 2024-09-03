@@ -7,7 +7,7 @@ use bdk::Error;
 use bdk::blockchain::EsploraBlockchain;
 use bdk::electrum_client::Client;
 use bdk::bitcoin::Network::Testnet;
-use bdk::bitcoin::consensus::encode::{deserialize, serialize};
+use bdk::bitcoin::consensus::encode::{Encodable, Decodable};
 use serde::{Serialize, Deserialize};
 use wasm_bindgen::prelude::*;
 
