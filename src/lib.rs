@@ -1,16 +1,10 @@
 use std::net::UdpSocket;
 use std::io::{self, IoSlice, IoSliceMut};
 use std::str::FromStr;
-use bdk::bitcoin::consensus::Encodable;
-use bdk::bitcoin::network::constants::Network;
-use bdk::bitcoin::util::address::Address;
-use bdk::bitcoin::Amount;
-use bdk::database::MemoryDatabase;
 use bdk::wallet::AddressIndex;
 use bdk::Wallet;
 use bdk::SignOptions;
 use bdk::Error;
-use wasm_bindgen::prelude::*;
 use serde::{Serialize, Deserialize};
 use wasm_bindgen::prelude::*;
 
