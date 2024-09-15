@@ -49,11 +49,3 @@ npm run dev
 
 - Idea by Rsync25
 - Developed by 22388o
-
-## Roadmap
-
-- [ ] Add Lightning Payments
-- [ ] Add Nostr compatible
-- [ ] Add Nostr client
-- [ ] Enable generate BDK wallet on-chain
-- [ ] Announce project
