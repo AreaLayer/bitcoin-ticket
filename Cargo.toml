@@ -9,6 +9,7 @@ wasm-bindgen = "0.2.100"
 bdk_esplora = "0.20.1"
 getrandom = { version = "0.2.15", features = ["js"] }
 idna = "=1.0.3"
+openssl = "0.10.70"
 
 [lib]
 crate-type = ["cdylib"]
