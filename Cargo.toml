@@ -6,7 +6,7 @@ edition = "2021"
 [dependencies]
 bdk = "0.30.1"
 wasm-bindgen = "0.2.100"
-bdk_esplora = "0.20.1"
+bdk_esplora = "0.22.0"
 getrandom = { version = "0.2.15", features = ["js"] }
 idna = "=1.0.3"
 ring = "0.17.13"
